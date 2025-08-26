@@ -5,18 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday</title>
   <style>
-    body {
-      margin: 0;
+    *{
+      padding: 0;
+      margin:  0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100vh;
+      overflow: hidden;
+      
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #6a11cb, #8e2de2);
       color: white;
       text-align: center;
     }
-    #container{
-      display:flex;
+    #container {
+      margin: 20px;
+      display: flex;
       height: 100vh;
-      width: 100%;
-      justigy-content: center;
+      width: 100vw;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
     }
     h1 {
@@ -65,15 +74,17 @@
 <body>
   <div id="container">
     <h1>🎉 Happy Birthday Tanisha 🎉</h1>
-    <img src="Designer.png" alt="Birthday Photo" class="photo">
+    <img src="./Designer.png" alt="Birthday Photo" class="photo">
     <p>Happy Birthday, Tanisha! You are not my best friend, you are my sister by heart. Wishing you a day filled with love, laughter, and joy! 💜</p>
   </div>
 
   <script>
-    // add autopaly mp3
-    const audio = new Audio('happy_birthday.mp3');
-    audio.loop = true;
-    audio.play();
+    // Add mp3 background music that play when screen loads
+    window.onload = function() {
+      let audio = new Audio('./happy_birthday.mp3');
+      audio.loop = true;
+      audio.play();
+    };
     
     // Sparkles
     for(let i=0; i<60; i++){
@@ -88,5 +99,3 @@
   </script>
 </body>
 </html>
-
-
