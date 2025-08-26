@@ -10,17 +10,15 @@
       margin:  0;
       box-sizing: border-box;
     }
-    body, html {
+    body{
       height: 100vh;
       overflow: hidden;
-      
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #6a11cb, #8e2de2);
       color: white;
       text-align: center;
     }
     #container {
-      margin: 20px;
       display: flex;
       height: 100vh;
       width: 100vw;
@@ -29,7 +27,6 @@
       align-items: center;
     }
     h1 {
-      margin-top: 60px;
       font-size: 4rem;
       text-shadow: 0 0 25px #ffccff, 0 0 40px #fff;
       animation: glow 2s infinite alternate;
@@ -69,9 +66,26 @@
     @keyframes fall {
       to { transform: translateY(110vh) rotate(360deg); }
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      .photo {
+        width: 150px;
+        height: 150px;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Autoplay background music -->
+  <audio id="bg-music" src="happy_birthday.mp3" autoplay loop></audio>
+  
   <div id="container">
     <h1>🎉 Happy Birthday Tanisha 🎉</h1>
     <img src="./Designer.png" alt="Birthday Photo" class="photo">
@@ -79,22 +93,25 @@
   </div>
 
   <script>
-    // Add mp3 background music that play when screen loads
-    window.onload = function() {
-      let audio = new Audio('./happy_birthday.mp3');
-      audio.loop = true;
-      audio.play();
-    };
-    
-    // Sparkles
-    for(let i=0; i<60; i++){
-      let sparkle = document.createElement("div");
-      sparkle.classList.add("sparkle");
-      sparkle.style.left = Math.random()*100 + "vw";
-      sparkle.style.top = Math.random()*100 + "vh";
+
+    // create sparkles
+    function createSparkle() {
+      const sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
+      sparkle.style.left = Math.random() * 100 + 'vw';
+      sparkle.style.top = Math.random() * -10 + 'vh';
       sparkle.style.background = `hsl(${Math.random()*360},100%,80%)`;
-      sparkle.style.animationDuration = (2+Math.random()*3)+"s, "+(3+Math.random()*4)+"s";
+      sparkle.style.transition = '0.5s';
+      sparkle.style.animationDuration = (Math.random() * 3 + 3) + 's, ' + (Math.random() * 5 + 5) + 's';
       document.body.appendChild(sparkle);
+      setTimeout(() => {
+        sparkle.remove();
+      }, 8000);
+    }
+    setInterval(createSparkle, 300);
+    // create initial sparkles
+    for (let i = 0; i < 20; i++) {
+      createSparkle();
     }
   </script>
 </body>
