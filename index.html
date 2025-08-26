@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #8e2de2);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 {
+      margin-top: 60px;
+      font-size: 4rem;
+      text-shadow: 0 0 25px #ffccff, 0 0 40px #fff;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 15px #ff99ff, 0 0 30px #cc66ff; }
+      to { text-shadow: 0 0 25px #fff, 0 0 50px #ffccff; }
+    }
+    .photo {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid #fff;
+      box-shadow: 0 0 25px #fff;
+      margin: 30px auto;
+      display: block;
+    }
+    p {
+      font-size: 1.5rem;
+      text-shadow: 0 0 15px #fff;
+      padding: 0 20px;
+    }
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px white, 0 0 20px violet;
+      animation: twinkle 2s infinite alternate, fall 6s linear infinite;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1.5); }
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Happy Birthday Tanisha 🎉</h1>
+  <img src="Designer.png" alt="Birthday Photo" class="photo">
+  <p>Happy Birthday, Tanisha! You are not my best friend, you are my sister by heart. Wishing you a day filled with love, laughter, and joy! 💜</p>
+
+  <script>
+    // add autopaly mp3
+    const audio = new Audio('happy_birthday.mp3');
+    audio.loop = true;
+    audio.play();
+    
+    // Sparkles
+    for(let i=0; i<60; i++){
+      let sparkle = document.createElement("div");
+      sparkle.classList.add("sparkle");
+      sparkle.style.left = Math.random()*100 + "vw";
+      sparkle.style.top = Math.random()*100 + "vh";
+      sparkle.style.background = `hsl(${Math.random()*360},100%,80%)`;
+      sparkle.style.animationDuration = (2+Math.random()*3)+"s, "+(3+Math.random()*4)+"s";
+      document.body.appendChild(sparkle);
+    }
+  </script>
+</body>
+</html>
