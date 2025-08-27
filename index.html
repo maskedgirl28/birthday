@@ -84,7 +84,7 @@
 </head>
 <body>
   <!-- Autoplay background music -->
-  <audio id="bg-music" src="./happy_birthday.mp3" autoplay loop></audio>
+  <audio id="bg-music" src="happy_birthday.mp3"></audio>
   
   <div id="container">
     <h1>🎉 Happy Birthday Tanisha 🎉</h1>
@@ -101,7 +101,6 @@
       sparkle.style.left = Math.random() * 100 + 'vw';
       sparkle.style.top = Math.random() * -10 + 'vh';
       sparkle.style.background = `hsl(${Math.random()*360},100%,80%)`;
-      sparkle.style.transition = '0.5s';
       sparkle.style.animationDuration = (Math.random() * 3 + 3) + 's, ' + (Math.random() * 5 + 5) + 's';
       document.body.appendChild(sparkle);
       setTimeout(() => {
@@ -111,10 +110,15 @@
     setInterval(createSparkle, 300);
     // create initial sparkles
     for (let i = 0; i < 20; i++) {
+      // play background music loop in first iteration
+      if (i === 0) {
+        const music = document.getElementById('bg-music');
+        music.volume = 0.2;
+        music.loop = true;
+        music.play();
+      }
       createSparkle();
     }
   </script>
 </body>
 </html>
-
-
