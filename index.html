@@ -80,6 +80,11 @@
       transition: background 0.3s, box-shadow 0.3s;
     }
 
+    #init_btn:hover {
+      background: #ff85c1;
+      box-shadow: 0 0 25px #ff85c1;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 600px) {
       h1 {
@@ -97,26 +102,38 @@
     h1, .photo, p{
       display: none;
     }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
   <!-- Autoplay background music -->
   <audio id="bg-music" src="happy_birthday.mp3" loop preload="auto"></audio>
+  <audio id="blast-music" src="blast.mp3" preload="auto"></audio>
   
   <div id="container">
     <h1>🎉 Happy Birthday 🎉<br>🎉 Tanisha 🎉</h1>
     <img src="./tanisha.jpeg" alt="Birthday Photo" class="photo">
     <p>Happy Birthday, Tanisha! You are not my best friend, you are my sister by heart. Wishing you a day filled with love, laughter, and joy! 💜</p>
     <button id="init_btn" onclick="display()">🎉 Click Me 🎉</button>
+    <canvas id="confettiCanvas"></canvas>
   </div>
   <script>
-    function display(){      
+    function display(){ 
+      // start confetti
+      startConfetti();
+      
       // show hidden elements
       document.querySelector('h1').style.display = 'block';
       document.querySelector('.photo').style.display = 'block';
       document.querySelector('p').style.display = 'block';
       document.getElementById('init_btn').style.display = 'none';
-      document.getElementById('bg-music').play();
 
       // create sparkles
       function createSparkle() {
@@ -132,14 +149,109 @@
         }, 8000);
       }
 
-      setInterval(createSparkle, 300);
+      // Delay sparkle creation by 2 seconds
+      setTimeout(() => {
+        setInterval(createSparkle, 300);
 
-      // create initial sparkles
-      for (let i = 0; i < 20; i++) {
-        createSparkle();
-      }
+        // create initial sparkles
+        for (let i = 0; i < 20; i++) {
+          createSparkle();
+        }
+        document.getElementById('bg-music').play();
+      }, 1500);
 
     }
+
+    // Confetti effect
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let confetti = [];
+    let animation;
+
+    function createConfetti() {
+      // play sound
+      document.getElementById('blast-music').play();
+      const confettiCount = 150;
+      confetti = [];
+
+      for (let i = 0; i < confettiCount; i++) {
+        const fromLeftCorner = i % 2 === 0;
+        const startX = fromLeftCorner ? 0 : canvas.width;
+        const startY = canvas.height;
+
+        // Angle range: 60° to 120° for upward spread, limited to half screen height
+        const angle = fromLeftCorner
+          ? Math.random() * Math.PI / 3 + Math.PI / 6  // 30°–90°
+          : Math.random() * Math.PI / 3 + Math.PI / 3; // 60°–120°
+
+        const speed = Math.random() * 10 + 10;
+
+        confetti.push({
+          x: startX,
+          y: startY,
+          vx: Math.cos(angle) * speed * (fromLeftCorner ? 1 : -1),
+          vy: -Math.sin(angle) * speed,
+          r: Math.random() * 4 + 2,
+          d: Math.random() * confettiCount,
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          tilt: Math.floor(Math.random() * 10) - 10,
+          tiltAngle: 0,
+          gravity: 0.1,
+          drag: 0.98
+        });
+      }
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(p => {
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt, p.y);
+        ctx.lineTo(p.x, p.y + p.tilt + p.r);
+        ctx.stroke();
+      });
+      updateConfetti();
+    }
+
+    function updateConfetti() {
+      confetti.forEach(p => {
+        p.tiltAngle += 0.1;
+        p.vy += p.gravity;
+        p.vx *= p.drag;
+        p.vy *= p.drag;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.tilt = Math.sin(p.tiltAngle - (p.d / 3)) * 15;
+
+        // Stop confetti if it reaches halfway up the screen
+        if (p.y < canvas.height / 4) {
+          p.vx = 0;
+          p.vy = 0;
+        }
+      });
+    }
+
+    function startConfetti() {
+      createConfetti();
+      clearInterval(animation);
+      animation = setInterval(drawConfetti, 20);
+
+      // Stop after 5 seconds
+      setTimeout(() => clearInterval(animation), 10000);
+
+      // Clear canvas after confetti stops
+      setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 11000);
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
     
   </script>
 </body>
